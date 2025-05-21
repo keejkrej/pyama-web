@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
-from gui import CellViewer
-import pyama_util
+from src.pyama_web.backend.gui import CellViewer
+import src.pyama_web.core.pyama_util as pyama_util
 import os
 
 class App:
