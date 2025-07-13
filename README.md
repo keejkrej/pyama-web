@@ -1,96 +1,160 @@
-# Flask Application Installation Guide
+# Pyama Scientific Image Processing - FastAPI + React
 
-This guide provides steps to set up and run the Flask application on a remote server.
+A modern web application for scientific image processing and analysis, refactored from Flask to FastAPI with a React frontend.
 
-## Prerequisites
+## Project Structure
 
-- SSH access to the remote server
-- Python 3.10 or higher installed on the remote server
+```
+pyama-web/
+├── backend/                 # FastAPI backend
+│   ├── app/
+│   │   ├── main.py         # FastAPI application
+│   │   ├── models.py       # Pydantic models
+│   │   ├── routers/        # API route handlers
+│   │   ├── services/       # Business logic and utilities
+│   │   └── core/           # Configuration
+│   ├── requirements.txt
+│   └── main.py            # Entry point
+├── frontend/               # React frontend
+│   ├── src/
+│   │   ├── components/     # React components
+│   │   ├── services/       # API client
+│   │   └── App.tsx        # Main app component
+│   └── package.json
+└── README_REFACTORED.md
+```
 
-## Installation Steps
+## Features
 
-1. SSH into the remote server:
+- **Modern Architecture**: FastAPI backend with React TypeScript frontend
+- **Type Safety**: Full TypeScript support and Pydantic models
+- **Async Processing**: Background tasks for long-running operations
+- **API Documentation**: Auto-generated OpenAPI/Swagger docs
+- **Responsive UI**: Modern React components with Tailwind CSS
 
-   ```
-   ssh username@server_address
-   ```
+## Setup Instructions
 
-   Example:
+### Backend Setup
 
-   ```
-   ssh j.mercado@lsr-cl-nv01.hpc.physik.uni-muenchen.de
-   ```
-
-2. Create a new directory for the project and navigate to it:
-
-   ```
-   mkdir flask_project
-   cd flask_project
-   ```
-
-3. Create a virtual environment:
-
-   ```
-   python3 -m venv fsk_py
-   ```
-
-4. Activate the virtual environment:
-
-   ```
-   source fsk_py/bin/activate
-   ```
-
-5. Upgrade pip:
-
-   ```
-   pip install --upgrade pip
+1. Navigate to the backend directory:
+   ```bash
+   cd backend
    ```
 
-6. Clone the project repository (if applicable) or copy your project files to this directory:
-
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
-   git clone https://gitlab.physik.uni-muenchen.de/LDAP_ls-raedler/Flask-LISCA.git .
-   ```
 
-7. Install the required packages:
-
-   ```
+3. Install dependencies:
+   ```bash
    pip install -r requirements.txt
    ```
 
-## Running the Application
-
-1. To run the Flask application:
-
-   ```
-   flask run --host 0.0.0.0 --port 8000
+4. Run the FastAPI server:
+   ```bash
+   python main.py
    ```
 
-2. To access the application from your local machine, use SSH port forwarding:
+   The API will be available at `http://localhost:8000`
+   API documentation at `http://localhost:8000/docs`
 
-   ```
-   ssh -L 8000:localhost:8000 username@server_address
-   ```
+### Frontend Setup
 
-   Example:
-
-   ```
-   ssh -L 8000:localhost:8000 j.mercado@lsr-cl-nv01.hpc.physik.uni-muenchen.de
+1. Navigate to the frontend directory:
+   ```bash
+   cd frontend
    ```
 
-3. Open a web browser on your local machine and go to:
-
+2. Install dependencies:
+   ```bash
+   npm install
    ```
-   http://localhost:8000
+
+3. Start the development server:
+   ```bash
+   npm run dev
    ```
 
-## Troubleshooting
+   The frontend will be available at `http://localhost:3000`
 
-- If you encounter permission issues, ensure you have the necessary rights to create directories and files on the server.
-- If the port 8000 is already in use, you can choose a different port number.
-- Make sure your server's firewall allows connections on the chosen port.
+## API Endpoints
 
-## Additional Notes
+### Image Processing
+- `POST /api/select_paths` - Select ND2 and output paths
+- `GET /api/view` - Get image viewer data
+- `POST /api/update_image` - Update displayed image
+- `POST /api/update_particle_enabled` - Toggle particle enabled state
 
-- Remember to keep your `requirements.txt` file updated if you add or remove packages.
-- For production deployment, consider using a production WSGI server like Gunicorn.
+### Analysis Pipeline
+- `GET /api/analysis` - Get analysis configuration
+- `POST /api/do_segmentation` - Start cell segmentation
+- `POST /api/do_tracking` - Start cell tracking
+- `POST /api/do_square_rois` - Generate square ROIs
+- `POST /api/do_export` - Export data to CSV
+
+### File Management
+- `GET /api/list_directory` - List directory contents
+- `POST /api/select_folder` - Select folder
+
+## Key Improvements
+
+1. **Performance**: FastAPI provides better performance than Flask
+2. **Type Safety**: Full TypeScript and Pydantic integration
+3. **Modern UI**: React components with proper state management
+4. **API-First**: Clean separation between frontend and backend
+5. **Background Tasks**: Long-running operations don't block the UI
+6. **Documentation**: Auto-generated API documentation
+7. **Development Experience**: Hot reload, better error handling
+
+## Development
+
+### Adding New Features
+
+1. **Backend**: Add new routes in `backend/app/routers/`
+2. **Frontend**: Add new components in `frontend/src/components/`
+3. **API Client**: Update `frontend/src/services/api.ts`
+
+### Running Tests
+
+Backend tests (when implemented):
+```bash
+cd backend
+pytest
+```
+
+Frontend tests:
+```bash
+cd frontend
+npm test
+```
+
+## Production Deployment
+
+### Backend
+Use a production ASGI server like Gunicorn with Uvicorn workers:
+```bash
+pip install gunicorn
+gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
+```
+
+### Frontend
+Build the production bundle:
+```bash
+cd frontend
+npm run build
+```
+
+Deploy the `dist/` folder to a web server or CDN.
+
+## Migration Notes
+
+This refactored version maintains the same core functionality as the original Flask application while providing:
+
+- Better scalability and performance
+- Modern development practices
+- Improved user experience
+- Easier maintenance and testing
+
+The original Flask application remains in the root directory for reference.

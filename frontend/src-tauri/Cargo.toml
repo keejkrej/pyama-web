@@ -1,0 +1,31 @@
+[package]
+name = "pyama-desktop"
+version = "0.1.0"
+description = "Pyama Scientific Image Processing Desktop Application"
+authors = ["Pyama Team"]
+license = "MIT"
+repository = ""
+default-run = "pyama-desktop"
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "pyama_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[[bin]]
+name = "pyama-desktop"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+serde_json = "1"
+serde = { version = "1", features = ["derive"] }
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
