@@ -20,7 +20,7 @@ trap cleanup SIGINT SIGTERM
 
 # Start backend server
 echo "🐍 Starting backend server (http://localhost:8000)..."
-cd "$SCRIPT_DIR/backend" && python main.py &
+cd "$SCRIPT_DIR/backend" && uv run python main.py &
 BACKEND_PID=$!
 
 # Wait a moment for backend to start

@@ -1,83 +1,75 @@
-# Pyama Scientific Image Processing - FastAPI + React
+# Pyama Scientific Image Processing
 
-A modern web application for scientific image processing and analysis, refactored from Flask to FastAPI with a React frontend.
+A modern scientific image processing application for analyzing ND2 microscopy files with particle tracking and analysis capabilities.
 
-## Project Structure
+## Tech Stack
 
-```
-pyama-web/
-├── backend/                 # FastAPI backend
-│   ├── app/
-│   │   ├── main.py         # FastAPI application
-│   │   ├── models.py       # Pydantic models
-│   │   ├── routers/        # API route handlers
-│   │   ├── services/       # Business logic and utilities
-│   │   └── core/           # Configuration
-│   ├── requirements.txt
-│   └── main.py            # Entry point
-├── frontend/               # React frontend
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   ├── services/       # API client
-│   │   └── App.tsx        # Main app component
-│   └── package.json
-└── README_REFACTORED.md
-```
-
-## Features
-
-- **Modern Architecture**: FastAPI backend with React TypeScript frontend
+- **Backend**: FastAPI with Python 3.13+, uv package manager
+- **Frontend**: React 19 + TypeScript, Vite, Tailwind CSS v4
+- **Desktop**: Tauri (Rust) with automatic Python backend startup
 - **Type Safety**: Full TypeScript support and Pydantic models
-- **Async Processing**: Background tasks for long-running operations
 - **API Documentation**: Auto-generated OpenAPI/Swagger docs
-- **Responsive UI**: Modern React components with Tailwind CSS
 
-## Setup Instructions
+## Quick Start
 
-### Backend Setup
+### Web Development
+```bash
+# Start both backend and frontend in development mode
+./start-dev.sh
+```
 
-1. Navigate to the backend directory:
-   ```bash
-   cd backend
-   ```
+### Desktop Development
+```bash
+# Start Tauri desktop app with auto-managed backend
+./start-tauri.sh
+```
 
-2. Create a virtual environment:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
+## Development
 
-3. Install dependencies:
-   ```bash
-   pip install -r requirements.txt
-   ```
+### Prerequisites
+- Python 3.13+
+- Node.js 18+
+- Rust (for Tauri desktop app)
+- uv package manager
 
-4. Run the FastAPI server:
-   ```bash
-   python main.py
-   ```
+### Manual Setup
 
-   The API will be available at `http://localhost:8000`
-   API documentation at `http://localhost:8000/docs`
+#### Backend
+```bash
+cd backend
+uv venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+uv pip install -r requirements.txt
+python main.py
+```
+The API will be available at `http://localhost:8000`
 
-### Frontend Setup
+#### Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
+The frontend will be available at `http://localhost:3000`
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
+### Building
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+#### Web Version
+```bash
+npm run build
+```
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
+#### Desktop App
+```bash
+cd frontend
+npm run tauri:build
+```
 
-   The frontend will be available at `http://localhost:3000`
+### Code Quality
+```bash
+# Run linting
+npm run lint
+```
 
 ## API Endpoints
 
@@ -130,31 +122,29 @@ cd frontend
 npm test
 ```
 
-## Production Deployment
+## Features
 
-### Backend
-Use a production ASGI server like Gunicorn with Uvicorn workers:
-```bash
-pip install gunicorn
-gunicorn -w 4 -k uvicorn.workers.UvicornWorker app.main:app
-```
+- **ND2 File Processing**: Native support for Nikon ND2 microscopy files
+- **Particle Tracking**: Advanced particle detection and tracking algorithms
+- **Real-time Analysis**: Live image processing and visualization
+- **Export Capabilities**: Export results in multiple formats (CSV, JSON)
+- **Cross-platform**: Runs as web app or native desktop application
 
-### Frontend
-Build the production bundle:
-```bash
-cd frontend
-npm run build
-```
+## Important Notes
 
-Deploy the `dist/` folder to a web server or CDN.
+- **Servers**: Backend runs on :8000, Frontend on :3000
+- **Desktop App**: Automatically starts and stops Python backend
+- **Styling**: Uses Tailwind CSS v4 with PostCSS (no CDN)
+- **Folder Selector**: Defaults to home directory, scroll contained within containers
 
-## Migration Notes
+## Contributing
 
-This refactored version maintains the same core functionality as the original Flask application while providing:
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-- Better scalability and performance
-- Modern development practices
-- Improved user experience
-- Easier maintenance and testing
+## License
 
-The original Flask application remains in the root directory for reference.
+This project is licensed under the MIT License - see the LICENSE file for details.
