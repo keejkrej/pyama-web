@@ -6,7 +6,7 @@ Pyama is a scientific image processing application for analyzing ND2 microscopy 
 ## Tech Stack
 - **Backend**: FastAPI with Python 3.13+, uv package manager
 - **Frontend**: React 19 + TypeScript, Vite, Tailwind CSS v4
-- **Desktop**: Tauri (Rust) with automatic Python backend startup
+- **Desktop**: Electron with automatic Python backend startup
 
 ## Project Structure
 ```
@@ -38,13 +38,12 @@ pyama-web/
 │   │   ├── services/       # API client
 │   │   │   └── api.ts      # Axios-based API service
 │   │   └── App.tsx         # Main app with routing
-│   ├── src-tauri/          # Tauri desktop app
-│   │   ├── src/
-│   │   │   └── main.rs     # Rust code managing Python backend
-│   │   └── tauri.conf.json # Tauri configuration
+│   ├── electron/           # Electron desktop app
+│   │   ├── main.js         # Main process managing Python backend
+│   │   └── preload.js      # Preload script for security
 │   └── package.json        # Frontend dependencies
 ├── start-dev.sh            # Web development launcher
-└── start-tauri.sh          # Desktop development launcher
+└── start-electron.sh       # Desktop development launcher
 ```
 
 ## API Endpoints
@@ -98,8 +97,8 @@ pyama-web/
 # Web development (runs on :3000 + :8000)
 ./start-dev.sh
 
-# Desktop development (Tauri manages backend)
-./start-tauri.sh
+# Desktop development (Electron manages backend)
+./start-electron.sh
 ```
 
 ### Manual Backend Start
@@ -138,14 +137,15 @@ npm run lint
 ### Frontend Configuration
 - Vite dev server: Port 5173
 - API base URL: http://localhost:8000/api
-- Tailwind CSS v4 with PostCSS
+- Tailwind CSS v4 (without PostCSS, using LightningCSS)
 - TypeScript strict mode enabled
 
-### Tauri Desktop App
+### Electron Desktop App
 - Auto-starts Python backend on launch
 - Auto-stops backend on window close
 - Tries multiple Python commands (python3, python, etc.)
 - Window size: 1200x800
+- Uses contextIsolation for security
 
 ## Key Dependencies
 
@@ -161,7 +161,7 @@ npm run lint
 - **Routing**: react-router-dom v7
 - **UI**: Tailwind CSS v4, Radix UI components
 - **HTTP**: axios
-- **Desktop**: Tauri v2
+- **Desktop**: Electron
 
 ## Important Notes
 

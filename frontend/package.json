@@ -3,19 +3,20 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "tauri": "tauri",
-    "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build"
+    "electron": "NODE_ENV=development electron .",
+    "electron:dev": "NODE_ENV=development electron .",
+    "electron:build": "npm run build && electron-builder",
+    "dist": "electron-builder"
   },
   "dependencies": {
     "@radix-ui/react-scroll-area": "^1.2.9",
     "@radix-ui/react-slot": "^1.2.3",
-    "@types/react-router-dom": "^5.3.3",
     "axios": "^1.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -27,23 +28,52 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
-    "@tailwindcss/postcss": "^4.1.11",
-    "@tauri-apps/cli": "^2.6.2",
-    "@types/node": "^24.0.13",
+    "@types/node": "^24.0.14",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
-    "autoprefixer": "^10.4.21",
+    "electron": "^37.2.3",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
-    "postcss": "^8.5.6",
+    "lightningcss": "^1.30.1",
     "tailwindcss": "^4.1.11",
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
-    "vite": "^7.0.4",
-    "vite-plugin-pwa": "^1.0.1",
-    "workbox-window": "^7.3.0"
+    "vite": "^7.0.4"
+  },
+  "build": {
+    "appId": "com.pyama.scientific",
+    "productName": "Pyama Scientific Image Processing",
+    "directories": {
+      "output": "dist-electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "!node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "../backend",
+        "to": "backend",
+        "filter": [
+          "**/*",
+          "!**/__pycache__",
+          "!**/*.pyc"
+        ]
+      }
+    ],
+    "mac": {
+      "category": "public.app-category.productivity"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
   }
 }
